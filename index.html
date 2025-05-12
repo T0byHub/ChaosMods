@@ -1,0 +1,222 @@
+import React, { useState, useEffect } from 'react';
+import { Download, Server, Rocket, Cookie } from 'lucide-react';
+
+const mods = [
+  {
+    id: 1,
+    name: 'ULTRA TERRAIN GENERATOR X',
+    description: 'QUANTUM TERRAIN MANIPULATION | REALITY-BENDING LANDSCAPES',
+    imageUrl: 'https://example.com/mod1-image.png',
+    modrinthLink: 'https://modrinth.com/mod/ultra-terrain'
+  },
+  {
+    id: 2,
+    name: 'CYBERPUNK CRAFT ULTIMATE',
+    description: 'HYPER-DIMENSIONAL URBAN ECOSYSTEM | MATRIX-LEVEL RENDERING',
+    imageUrl: 'https://example.com/mod2-image.png',
+    modrinthLink: 'https://modrinth.com/mod/cyberpunk-craft'
+  },
+  {
+    id: 3,
+    name: 'QUANTUM CREATURES NEXUS',
+    description: 'INTERDIMENSIONAL MOB MECHANICS | BEYOND COMPUTATIONAL LIMITS',
+    imageUrl: 'https://example.com/mod3-image.png',
+    modrinthLink: 'https://modrinth.com/mod/quantum-creatures'
+  }
+];
+
+const CookieConsent = () => {
+  const [isVisible, setIsVisible] = useState(true);
+  const [isAccepted, setIsAccepted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleAccept = () => {
+    setIsAccepted(true);
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 500);
+  };
+
+  const handleDecline = () => {
+    setIsVisible(false);
+  };
+
+  if (!isVisible) return null;
+
+  return (
+    <div 
+      className={`
+        fixed bottom-4 right-4 z-[100] 
+        bg-white border border-gray-300 
+        rounded-lg p-4 w-80 
+        shadow-lg
+        transition-all duration-300
+        ${isHovered ? 'scale-105' : ''}
+        ${isAccepted ? 'animate-accept-cookies' : ''}
+      `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="flex items-center mb-2">
+        <Cookie className="mr-2 text-blue-500" size={24} />
+        <h3 className="text-xl font-bold text-gray-800">Cookie Consent</h3>
+      </div>
+      <p className="text-gray-600 mb-4 text-sm">
+        This website uses cookies to enhance your browsing experience.
+      </p>
+      <div className="flex space-x-2">
+        <button 
+          onClick={handleAccept}
+          className="
+            bg-blue-500 text-white 
+            px-4 py-2 rounded-lg 
+            hover:bg-blue-600 
+            transition-colors
+            flex-grow
+            active:scale-95
+          "
+        >
+          Accept Cookies
+        </button>
+        <button 
+          onClick={handleDecline}
+          className="
+            bg-gray-200 text-gray-700 
+            px-4 py-2 rounded-lg 
+            hover:bg-gray-300 
+            transition-colors
+            active:scale-95
+          "
+        >
+          Decline
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const ModCard = ({ mod }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div 
+      className={`
+        bg-gradient-to-br from-gray-900 to-gray-800 
+        border-2 border-gray-700 rounded-2xl p-4 mb-4 
+        flex items-center transition-all duration-500 
+        relative overflow-hidden
+      `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative z-10 flex items-center w-full">
+        <div className="relative mr-6">
+          <div 
+            className={`
+              w-48 h-32 rounded-2xl overflow-hidden 
+              transition-all duration-500
+              ${isHovered ? 'scale-110 rotate-3' : ''}
+            `}
+          >
+            <img 
+              src={mod.imageUrl} 
+              alt={mod.name} 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      
+        <div className="flex-grow">
+          <h2 
+            className="
+              text-3xl font-bold mb-2 uppercase tracking-wider
+              text-blue-400
+            "
+          >
+            {mod.name}
+          </h2>
+
+          <p 
+            className="
+              text-gray-300 mb-4 uppercase tracking-wide text-sm
+            "
+          >
+            {mod.description}
+          </p>
+        
+          <a 
+            href={mod.modrinthLink} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={`
+              inline-flex items-center px-6 py-3 
+              bg-green-500 text-black rounded-full 
+              hover:bg-green-400 transition-all
+              font-bold uppercase tracking-wider
+            `}
+          >
+            <Rocket className="mr-2" size={24} />
+            MODRINTH
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ChaosModsApp = () => {
+  return (
+    <div 
+      className="
+        min-h-screen 
+        bg-gradient-to-br from-black via-gray-950 to-black 
+        text-white p-8
+        relative
+        overflow-hidden
+      "
+    >
+      <div className="max-w-4xl mx-auto relative z-20">
+        <header className="mb-16 text-center">
+          <h1 
+            className="
+              text-6xl font-black 
+              text-blue-400
+              mb-4 
+              uppercase tracking-widest
+            "
+          >
+            CHAOS MODS
+          </h1>
+          <p 
+            className="
+              text-gray-300 text-xl 
+              uppercase tracking-wider
+            "
+          >
+            REDEFINING MINECRAFT | BEYOND COMPUTATIONAL REALITY
+          </p>
+        </header>
+
+        {mods.map(mod => (
+          <ModCard key={mod.id} mod={mod} />
+        ))}
+      </div>
+
+      <CookieConsent />
+
+      <style jsx>{`
+        @keyframes accept-cookies {
+          0% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.1); opacity: 0.8; }
+          100% { transform: scale(0); opacity: 0; }
+        }
+
+        .animate-accept-cookies {
+          animation: accept-cookies 0.5s ease-in-out forwards;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default ChaosModsApp;
